@@ -3,7 +3,7 @@
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/kdev_t.h>  										/*kdev_t and device is to automatically create the device file*/
-#include <linux/device.h>										/*DO NOT TOUCH THEM PLEASE*/
+#include <linux/device.h>
 #include <linux/err.h>
 #define dev	336
 #define min	0
@@ -85,7 +85,9 @@ static int __init Load(void) {											/*Check if we can staticlly assign a de
 		c_dev_class = class_create(THIS_MODULE, "Cclass");
 		device_create(c_dev_class, NULL, dev, NULL, "Cdevice");
 
-		return 0;
+		if (!IS_ERR()){
+		   return 0;
+		};
 
 };
 
