@@ -1,4 +1,4 @@
-/*--- This is used for refernce when developing other things, don't expect quality.---*/
+/*--- This is used for refernce when developing other things, don't expect the best quality.---*/
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/fs.h>
@@ -86,9 +86,11 @@ static int __init Load(void) {											/*Check if we can staticlly assign a de
 		c_dev_class = class_create(THIS_MODULE, "Cclass");
 		device_create(c_dev_class, NULL, dev, NULL, "Cdevice");
 
-		if (!IS_ERR()){
-		   return 0;
+		if (IS_ERR()){
+		   return -1;
 		};
+	
+		return 0;
 
 };
 
