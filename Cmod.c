@@ -1,4 +1,4 @@
-/*--- This is used for refernce when developing other things, don't expect the best quality.---*/
+/*--- This is used for reference when developing other things, don't expect the best quality.---*/
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/fs.h>
@@ -86,15 +86,16 @@ static int __init Load(void) {											/*Check if we can staticlly assign a de
 		c_dev_class = class_create(THIS_MODULE, "Cclass");
 		device_create(c_dev_class, NULL, dev, NULL, "Cdevice");
 
-		if (IS_ERR()){
+		if (IS_ERR(c_dev_class)){
+		   pr_err("Caught an problem with class creation - class_create()");
+		   class_destroy(c_dev_class);
 		   return -1;
 		};
 	
 		return 0;
-
 };
 
-static void __exit Unload(void) {
+static void __exit Unload(void) {									    /*Unload */
 	cdev_del(&c_cdev);
 	unregister_chrdev_region(ident, 1);
 	class_destroy(c_dev_class);
