@@ -24,7 +24,7 @@ static int 	c_open(struct inode *inode, struct file *file);
 static int 	c_release(struct inode *inode, struct file *file);
 /*-------------------------------------*/
 
-static struct file_operations fops = {
+static struct file_operations fops = {									/*fops is a member in the cdev structure*/
 	.owner	 =	THIS_MODULE,
 	.read	 =	c_read,
 	.write	 =	c_write,
