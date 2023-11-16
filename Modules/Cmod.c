@@ -67,7 +67,7 @@ static int __init Load(void) {									       /*Check if we can staticlly assign
 	   resp = alloc_chrdev_region(&ident, min, 1, "Cmod");
 	   pr_info("Module Loaded! Device identifier - MAJOR(%d):MINOR(%d)", dev, min);
 														/*If number assigned is not valid*/
-	   if (resp < min){
+	   if (resp < min) {
 	      pr_err("Failure to allocate a device number\n Device identifier: %d", ident);
 	      return -1;
 	   }
