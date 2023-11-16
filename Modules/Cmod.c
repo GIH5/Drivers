@@ -3,7 +3,7 @@
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/kdev_t.h>  										/*kdev_t and device is to automatically create the device file*/
-#include <linux/device.h>										/*DO NOT TOUCH THEM PLEASE*/
+#include <linux/device.h>										
 #include <linux/err.h>
 #define dev	336
 #define min	0
@@ -67,10 +67,11 @@ static int __init Load(void) {									       /*Check if we can staticlly assign
 	   resp = alloc_chrdev_region(&ident, min, 1, "Cmod");
 	   pr_info("Module Loaded! Device identifier - MAJOR(%d):MINOR(%d)", dev, min);
 														/*If number assigned is not valid*/
-	   if (resp < min);
+	   if (resp < min){
 	      pr_err("Failure to allocate a device number\n Device identifier: %d", ident);
 	      return -1;
-
+	   }
+		
 	   goto cdev_init;
 	};
 
@@ -82,7 +83,7 @@ static int __init Load(void) {									       /*Check if we can staticlly assign
 		cdev_add(&c_cdev, dev, 1);
 		pr_info("Charecter device added");
 
-		c_dev_class = class_create(THIS_MODULE, "Cclass");
+		c_dev_class = class_create(THIS_MODULE, "Cclass");						/*Create class and check /sys/class */
 		device_create(c_dev_class, NULL, dev, NULL, "Cdevice");
 
 		if(IS_ERR(c_dev_class)) {
