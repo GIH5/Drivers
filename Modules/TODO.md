@@ -1,4 +1,4 @@
-# Fix Cmod injection from kernel space
+# Fix Cmod inject from kernel space
   Cmod has a issue with being Unloaded from the kernel.
   Any time I reject it, I recive 'killed'
   
