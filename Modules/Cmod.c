@@ -98,8 +98,8 @@ static int __init Load(void) {									       /*Check if we can staticlly assign
 static void __exit Unload(void) {
 	cdev_del(&c_cdev);
 	unregister_chrdev_region(ident, 1);
-	class_destroy(c_dev_class);
-	device_destroy(c_dev_class, dev);
+	device_destroy(c_dev_class, dev);									/*Must have device_destroy() before class destroy to avoid a NULL pointer dereference*/
+	class_destroy(C_dev_class);
 	pr_info("Unloaded module");
 };
 
