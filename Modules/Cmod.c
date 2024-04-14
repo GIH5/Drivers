@@ -1,7 +1,7 @@
-#include <linux/init.h>
-#include <linux/module.h>
-#include <linux/fs.h>
-#include <linux/cdev.h>
+#include <linux/init.h>										        /*For init and cleanup functions*/
+#include <linux/module.h>										/*For providing the functions and symbols*/
+#include <linux/fs.h>											/*File system usage*/
+#include <linux/cdev.h>											/*Implements the char device and functionality*/
 #include <linux/kdev_t.h>  										/*kdev_t and device is to automatically create the device file*/
 #include <linux/device.h>										
 #include <linux/err.h>
