@@ -5,8 +5,12 @@
 #include <linux/kdev_t.h>  										/*kdev_t and device is to automatically create the device file*/
 #include <linux/device.h>										/*DO NOT TOUCH THEM PLEASE*/
 #include <linux/err.h>
+
 #define dev	501
-#define min	0
+
+#ifndef min_V
+ #define min_V	0
+#endif
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Gabe");
@@ -57,23 +61,24 @@ static struct file_operations fops = {
 };
 
 static int __init Load(void) {									       /*Check if we can staticlly assign a device number.*/
+
 	if (dev) {
-	   ident = MKDEV(dev, min);
+	   ident = MKDEV(dev, min_V);
 	   resp = register_chrdev_region(ident, 1, "Cmod");
 
-	   if (resp < min) {
-              pr_info("Can't register using: register_chrdev_region() - MEM_INFO: 0x%p", resp);
+	   if (resp < min_V) {
+              pr_info("Can't register using: register_chrdev_region()");
 	      return resp;
 	   }
 
-	   pr_info("Module loaded! Device identifier - MAJOR(%d):MINOR(%d)", dev, min);
+	   pr_info("Module loaded! Device identifier - MAJOR(%d):MINOR(%d)", dev, min_V);
 	   goto cdev_init;
         }
 	else {
-	   resp = alloc_chrdev_region(&ident, min, 1, "Cmod");
-	   pr_info("Module Loaded! Device identifier - MAJOR(%d):MINOR(%d)", dev, min);
+	   resp = alloc_chrdev_region(&ident, min_V, 1, "Cmod");
+	   pr_info("Module Loaded! Device identifier - MAJOR(%d):MINOR(%d)", dev, min_V);
 														/*If number assigned is not valid*/
-	   if (resp < min) {
+	   if (resp < min_V) {
 	      pr_err("Failure to allocate a device number\n Device identifier: %d", ident);
 	      return resp;
 	   }
@@ -101,6 +106,7 @@ static int __init Load(void) {									       /*Check if we can staticlly assign
                if (IS_ERR(device_create(c_dev_class, NULL, dev, NULL, "C-device_1"))) {
 		  pr_err("device_create() function error caught here!");
 		  class_destroy(c_dev_class);
+		  return -1;
                }
 
 		/*
@@ -112,7 +118,6 @@ static int __init Load(void) {									       /*Check if we can staticlly assign
 		*/
 
 		 return 0;
-
 };
 
 static void __exit Unload(void) {
